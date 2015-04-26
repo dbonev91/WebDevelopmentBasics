@@ -5,6 +5,7 @@ include_once 'Loader.php';
 class App {
         private static $_instance = null;
         private $_config = null;
+        private $_frontController;
     
         private function __construct () {
                 $namespace = "GF";
@@ -38,6 +39,10 @@ class App {
                 if ($this->_config->getConfigFolder() == null) {
                         $this->_config->_setConfigFolder('../config');
                 }
+            
+                $this->_frontController = \GF\FrontController::getInstance();
+                
+                $this->_frontController->dispatch();
         }
     
         public static function getInstance () {
