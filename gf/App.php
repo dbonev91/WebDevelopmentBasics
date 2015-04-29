@@ -6,6 +6,7 @@ class App {
         private static $_instance = null;
         private $_config = null;
         private $_frontController;
+        private $router = null;
     
         private function __construct () {
                 $namespace = "GF";
@@ -28,6 +29,14 @@ class App {
                 return $this->_config->_configFolder;
         }
     
+        public function getRouter () {
+                return $this->router;
+        }
+    
+        public function setRouter ($router) {
+                $this->router = $router;
+        }
+    
         /*
                 @return type: \GF\Config
         */
@@ -41,6 +50,21 @@ class App {
                 }
             
                 $this->_frontController = \GF\FrontController::getInstance();
+                
+                if ($this->router instanceof \GF\Routers\IRouter) {
+                        $this->_frontController->setRouter($this->router);
+                }
+                else if ($this->router == 'JsonRPCRouter') {
+                        // TODO: fix it when RPC is done
+                        $this->_frontController->setRouter(new \GF\Routers\DefaultRouter());
+                }
+                else if ($this->router == 'CLIRouter') {
+                        // TODO: fix it when RPC is done
+                        $this->_frontController->setRouter(new \GF\Routers\DefaultRouter());
+                }
+                else {
+                        $this->_frontController->setRouter(new \GF\Routers\DefaultRouter());
+                }
                 
                 $this->_frontController->dispatch();
         }

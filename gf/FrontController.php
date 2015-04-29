@@ -6,14 +6,26 @@ class FrontController {
         private $namespaceValue = null;
         private $controller = null;
         private $method = null;
+        private $router = null;
     
         private function __construct () {
                 
         }
     
+        public function getRouter () {
+                return $this->router;
+        }
+    
+        public function setRouter (\GF\Routers\IRouter $router) {
+                $this->router = $router;
+        }
+    
         public function dispatch () {
-                $defaultRouter = new \GF\Routers\DefaultRouter();
-                $_uri = $defaultRouter->getURI();
+                if ($this->router == null) {
+                        throw new \Exception("No valid router found", 500);
+                }
+            
+                $_uri = $this->router->getURI();
                 $routes = \GF\App::getInstance()->getConfig()->routes;
                 $_routeControllerArray = null;
             
@@ -69,6 +81,7 @@ class FrontController {
                         }
                 }
             
+                // TODO
                 $namespaceAndController = $this->namespaceValue . '\\' . ucfirst($this->controller);
                 $newController = new $namespaceAndController();
                 $newController->{$this->method}();
