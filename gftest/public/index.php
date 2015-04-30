@@ -12,8 +12,7 @@ include '../../gf/App.php';
 
 $app = \GF\App::getInstance();
 
-$db = new \GF\DB\SimpleDB();
-$a = $db->prepare('SELECT * FROM events WHERE id=?', array(2))->execute()->fetchAllAssoc();
-print_r($a);
-
 $app->run();
+
+$app->getSession()->counter+=1;
+echo $app->getSession()->counter;

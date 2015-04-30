@@ -8,6 +8,7 @@ class App {
         private $_frontController;
         private $router = null;
         private $_dbConnectionsArray = array();
+        private $_session = null;
     
         private function __construct () {
                 $namespace = "GF";
@@ -67,7 +68,33 @@ class App {
                         $this->_frontController->setRouter(new \GF\Routers\DefaultRouter());
                 }
                 
+                $_sess = $this->_config->app['session'];
+                if ($_sess['autostart']) {
+                    if ($_sess['type'] == 'native') {
+                        $_s = new \GF\Session\NativeSession(
+                            $_sess['name'],
+                            $_sess['lifetime'],
+                            $_sess['path'],
+                            $_sess['domain'],
+                            $_sess['secure']
+                        );
+                    }
+                    
+                    $this->setSession($_s);
+                }
+                
                 $this->_frontController->dispatch();
+        }
+        
+        public function setSession (\GF\Session\ISession $session) {
+            $this->_session = $session;
+        }
+        
+        /*
+            @return \GF\Session\ISession 
+        */
+        public function getSession () {
+            return $this->_session;
         }
         
         public function getDBConnection ($connection = 'default') {
