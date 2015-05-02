@@ -79,6 +79,20 @@ class App {
                             $_sess['secure']
                         );
                     }
+                    else if ($_sess['type'] == 'database') {
+                        $_s = new \GF\Session\DBSession(
+                            $_sess['dbConnection'],
+                            $_sess['name'],
+                            $_sess['dbTable'],
+                            $_sess['lifetime'],
+                            $_sess['path'],
+                            $_sess['domain'],
+                            $_sess['secure']
+                        );
+                    }
+                    else {
+                        throw new \Exception("No valid session", 500);
+                    }
                     
                     $this->setSession($_s);
                 }
