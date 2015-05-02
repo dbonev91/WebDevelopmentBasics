@@ -143,4 +143,10 @@ class App {
             
                 return self::$_instance;
         }
+        
+        public function __destruct() {
+            if ($this->_session != null) {
+                $this->_session->saveSession();
+            }
+        }
 }

@@ -8,7 +8,7 @@ class DBSession extends \GF\DB\SimpleDB implements \GF\Session\ISession {
 	private $path;
 	private $domain;
 	private $secure;
-	private $sessionId;
+	private $sessionId = null;
 	private $sessionData = array();
 	
 	public function __construct ($dbConnection, $name, $tableName = 'session', $lifetime = 3600, $path = null, $domain = null, $secure = null) {
@@ -21,6 +21,12 @@ class DBSession extends \GF\DB\SimpleDB implements \GF\Session\ISession {
 		$this->domain = $domain;
 		$this->secure = $secure;
 		$this->sessionId = $_COOKIE[$name];
+		
+		// pseudo garbadge collector
+		$is50thQuery = (rand (0, 50) == 1);
+		if ($is50thQuery) {
+			$this->_garbadgeCollector();
+		}
 		
 		if (strlen($this->sessionId) < 32) {
 			$this->_startNewSession();
@@ -53,7 +59,7 @@ class DBSession extends \GF\DB\SimpleDB implements \GF\Session\ISession {
 	}
 	
 	public function getSessionId() {
-		
+		return $this->sessionId;
 	}
 	
 	public function saveSession() {
@@ -65,7 +71,9 @@ class DBSession extends \GF\DB\SimpleDB implements \GF\Session\ISession {
 	}
 	
 	public function destroySession() {
-		
+		if ($this->sessionId) {
+			$this->prepare('DELETE FROM ' . $this->tableName . ' WHERE sessid=?', array($this->sessionId))->execute();
+		}
 	}
 	
 	public function __get($name) {
@@ -74,5 +82,9 @@ class DBSession extends \GF\DB\SimpleDB implements \GF\Session\ISession {
 	
 	public function __set($name, $value) {
 		$this->sessionData[$name] = $value;
+	}
+	
+	public function _garbadgeCollector() {
+		$this->prepare('DELETE FROM `' . $this->tableName . '` WHERE valid_until<?', array(time()))->execute();
 	}
 }
