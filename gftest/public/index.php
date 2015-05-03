@@ -13,6 +13,3 @@ include '../../gf/App.php';
 $app = \GF\App::getInstance();
 
 $app->run();
-
-$app->getSession()->counter2+=1;
-echo $app->getSession()->counter2;
