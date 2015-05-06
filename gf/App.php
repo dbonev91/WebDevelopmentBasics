@@ -11,16 +11,18 @@ class App {
         private $_session = null;
     
         private function __construct () {
-                $namespace = "GF";
-                $path = dirname(__FILE__) . DIRECTORY_SEPARATOR;
-                
-                \GF\Loader::registerNamespace($namespace, $path);
-                \GF\Loader::registerAutoload();
-                $this->_config = \GF\Config::getInstance();
-                
-                if ($this->_config->getConfigFolder() == null) {
-                        $this->_config->setConfigFolder('../config');
-                }
+            set_exception_handler(array($this, '_exceptionHandler'));
+        
+            $namespace = "GF";
+            $path = dirname(__FILE__) . DIRECTORY_SEPARATOR;
+            
+            \GF\Loader::registerNamespace($namespace, $path);
+            \GF\Loader::registerAutoload();
+            $this->_config = \GF\Config::getInstance();
+            
+            if ($this->_config->getConfigFolder() == null) {
+                $this->_config->setConfigFolder('../config');
+            }
         }
     
         public function setConfigFolder ($path) {
@@ -142,6 +144,27 @@ class App {
                 }
             
                 return self::$_instance;
+        }
+        
+        public function _exceptionHandler(\Exception $exception) {
+            if ($this->_config && $this->_config->app['displayExceptions'] == true) {
+                echo '<pre>' . print_r($exception, true) . '</pre>';
+            }
+            else {
+                $this->displayError($exception->getCode());
+            }
+        }
+        
+        public function displayError($error) {
+            try {
+                $view = \GF\View::getInstance();
+                $view->display('errors.' . $error);
+            }
+            catch (\Exception $exception) {
+                \GF\Common::headerStatus($error);
+                echo '<h1>' . $error . '</h1>';
+                exit;
+            }
         }
         
         public function __destruct() {
