@@ -4,6 +4,7 @@ namespace GF\Routers;
 class JsonRPCRouter implements \GF\Routers\IRouter {
 	private $_map = array();
 	private $_requestId;
+	private $_post = array();
 	
 	public function __construct() {
 		$notJSONRequest = $_SERVER['REQUEST_METHOD'] != 'POST' ||
@@ -40,6 +41,7 @@ class JsonRPCRouter implements \GF\Routers\IRouter {
 		else {
 			if ($this->_map[$request['method']]) {
 				$this->_requestId = $request['id'];
+				$this->_post = $request['params'];
 				return $this->_map[$request['method']];
 			}
 			else {
@@ -50,5 +52,9 @@ class JsonRPCRouter implements \GF\Routers\IRouter {
 	
 	public function getRequestId() {
 		return $this->_requestId;
+	}
+	
+	public function getPost () {
+		return $this->_post;
 	}
 }

@@ -4,6 +4,9 @@ namespace GF;
 class FrontController {
         private static $_instance;
         private $namespaceValue = null;
+        /*
+            @var \GF\Router\IRouter
+        */
         private $controller = null;
         private $method = null;
         private $router = null;
@@ -54,13 +57,16 @@ class FrontController {
                 else if ($this->namespaceValue == null && !$routes['*']['namespace']) {
                         throw new exception("Default route missing", 500);
                 }
-            
+                
+                $input = \GF\InputData::getInstance();
                 $_params = explode('/', $_uri);
                 
                 if ($_params[0]) {
                         $this->controller = strtolower($_params[0]);
                         if ($_params[1]) {
                                 $this->method = strtolower($_params[1]);
+                                unset($_params[0], $_params[1]);
+                                $input->setGet(array_values($_params));
                         }
                         else {
                                 $this->method = $this->getDefaultMethod();
@@ -80,7 +86,8 @@ class FrontController {
                                 $this->controller = strtolower($_routeControllerArray['controllers'][$this->controller]['to']);
                         }
                 }
-            
+                
+                $input->setPost($this->controller->getPost());
                 // TODO
                 $namespaceAndController = $this->namespaceValue . '\\' . ucfirst($this->controller);
                 $newController = new $namespaceAndController();
