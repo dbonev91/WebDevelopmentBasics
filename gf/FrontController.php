@@ -4,11 +4,11 @@ namespace GF;
 class FrontController {
         private static $_instance;
         private $namespaceValue = null;
+        private $controller = null;
+        private $method = null;
         /*
             @var \GF\Router\IRouter
         */
-        private $controller = null;
-        private $method = null;
         private $router = null;
     
         private function __construct () {
@@ -87,7 +87,7 @@ class FrontController {
                         }
                 }
                 
-                $input->setPost($this->controller->getPost());
+                $input->setPost($this->router->getPost());
                 // TODO
                 $namespaceAndController = $this->namespaceValue . '\\' . ucfirst($this->controller);
                 $newController = new $namespaceAndController();

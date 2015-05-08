@@ -2,8 +2,11 @@
 
 namespace Controllers;
 
-class Index {
+class Index extends \GF\DefaultController {
     public function index3() {
+        $this->app->displayError(404);
+        exit;
+        
         $val = new \GF\Validation();
         $val->setRule('custom', 5, function ($a) {
             echo $a;
