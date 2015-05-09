@@ -24,7 +24,7 @@ class InputData {
                 }
         }
     
-        public function gasGet ($id) {
+        public function hasGet ($id) {
                 return array_key_exists($id, $this->_get);
         }
     

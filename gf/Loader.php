@@ -18,8 +18,10 @@ final class Loader {
     
         public static function loadClass ($class) {
                 foreach (self::$namespaces as $key => $value) {
+                    $class = str_replace('\\', '/', $class);
                         if (strpos($class, $key) === 0) {
                                 $file = substr_replace($class, $value, 0, strlen($key)) . '.php';
+                                
                                 $isRealPath = realpath($file);
                                 
                                 if ($isRealPath && is_readable($isRealPath)) {
@@ -27,7 +29,8 @@ final class Loader {
                                 }
                                 else {
                                     // TODO
-                                    throw new invalidargumentexception("File cannot be included: " . $file);
+                                    echo $file;
+                                    throw new \Exception("File cannot be included: " . $file);
                                 }
                             
                                 break;
@@ -44,20 +47,20 @@ final class Loader {
                                 $isRealPath = $_path && is_dir($_path) && is_readable($_path);
 
                                 if ($isRealPath) {
-                                        self::$namespaces[$namespace . DIRECTORY_SEPARATOR] = $_path . DIRECTORY_SEPARATOR;
+                                        self::$namespaces[$namespace . '/'] = $_path . '/';
                                 }
                                 else {
                                         // TODO
-                                        throw new invalidargumentexception("Namespace dir read error: " . $path);
+                                        throw new \Exception("Namespace dir read error: " . $path);
                                 }   
                         }
                         else {
-                                throw new invalidargumentexception("Invalid path: " . $path);
+                                throw new \Exception("Invalid path: " . $path);
                         }
                 }
                 else {
                         // TODO: main catching and do somethings with errors
-                        throw new invalidargumentexception("Invalid namespace: " . $namespace);
+                        throw new \Exception("Invalid namespace: " . $namespace);
                 }
         }
     
@@ -68,7 +71,7 @@ final class Loader {
                         }
                 }
                 else {
-                        throw new invalidargumentexception("Invalid namespaces: " . $namespacesArray);
+                        throw new \Exception("Invalid namespaces: " . $namespacesArray);
                 }
         }
     

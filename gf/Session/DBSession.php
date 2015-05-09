@@ -25,7 +25,7 @@ class DBSession extends \GF\DB\SimpleDB implements \GF\Session\ISession {
 		// pseudo garbadge collector
 		$is50thQuery = (rand (0, 50) == 1);
 		if ($is50thQuery) {
-			$this->_garbadgeCollector();
+			// $this->_garbadgeCollector();
 		}
 		
 		if (strlen($this->sessionId) < 32) {

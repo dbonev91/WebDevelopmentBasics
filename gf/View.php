@@ -15,7 +15,8 @@ class View {
 		$this->___viewPath = \GF\App::getInstance()->getConfig()->app['viewsDirecotry'];
 		
 		if ($this->___viewPath == null) {
-			$this->___viewPath = realpath('../views/');
+			// $this->___viewPath = realpath('../views/');
+			$this->___viewPath = realpath('gftest/views/');
 		}
 	}
 	

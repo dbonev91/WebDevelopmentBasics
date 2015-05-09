@@ -14,14 +14,15 @@ class App {
             set_exception_handler(array($this, '_exceptionHandler'));
         
             $namespace = "GF";
-            $path = dirname(__FILE__) . DIRECTORY_SEPARATOR;
+            $path = dirname(__FILE__) . '/';
             
             \GF\Loader::registerNamespace($namespace, $path);
             \GF\Loader::registerAutoload();
             $this->_config = \GF\Config::getInstance();
             
             if ($this->_config->getConfigFolder() == null) {
-                $this->_config->setConfigFolder('../config');
+                // $this->_config->setConfigFolder('../config');
+                $this->_config->setConfigFolder('gftest/config');
             }
         }
     
@@ -50,7 +51,8 @@ class App {
     
         public function run () {
                 if ($this->_config->getConfigFolder() == null) {
-                        $this->_config->_setConfigFolder('../config');
+                        $this->_config->setConfigFolder('gftest/config');
+                        // $this->_config->setConfigFolder('../config');
                 }
             
                 $this->_frontController = \GF\FrontController::getInstance();
@@ -147,6 +149,7 @@ class App {
         }
         
         public function _exceptionHandler(\Exception $exception) {
+            echo $exception;
             if ($this->_config && $this->_config->app['displayExceptions'] == true) {
                 echo '<pre>' . print_r($exception, true) . '</pre>';
             }

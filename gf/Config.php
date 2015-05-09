@@ -16,7 +16,7 @@ class Config {
     
         public function setConfigFolder ($configFolder) {
                 if (!$configFolder) {
-                        throw new invalidargumentexception("Invalid config folder: " . $configFolder);
+                        throw new \Exception("Invalid config folder: " . $configFolder);
                 }
             
                 $_configFolder = realpath($configFolder);    
@@ -25,7 +25,7 @@ class Config {
                 if ($isValidConfigFolder) {
                         // clear old config data
                         $this->_configArray = array();
-                        $this->_configFolder = $_configFolder . DIRECTORY_SEPARATOR;
+                        $this->_configFolder = $_configFolder . '/';
                     
                         $namespaces = $this->app['namespaces'];
                         
@@ -34,7 +34,7 @@ class Config {
                         }
                 }
                 else {
-                        throw new invalidargumentexception("Invalid config folder: " . $_configFolder);
+                        throw new \Exception("Invalid config folder: " . $_configFolder);
                 }
         }
     
@@ -61,11 +61,11 @@ class Config {
                                 $this->_configArray[$_basename] = include $_file;
                         }
                         else {
-                                throw new invalidargumentexception("Config file read error: " . $_file);
+                                throw new \Exception("Config file read error: " . $_file);
                         }
                 }
                 else {
-                        throw new invalidargumentexception("Invalid path: " . $path);
+                        throw new \Exception("Invalid path: " . $path);
                 }
         }
     
