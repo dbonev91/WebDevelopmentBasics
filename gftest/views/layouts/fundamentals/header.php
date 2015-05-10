@@ -23,7 +23,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a id="brand" href="#"><img src="<?= $this->prefix; ?>/img/logo.png" alt=""></a>
+                    <a id="brand" href="http://dbonev.com"><img src="<?= $this->prefix; ?>/img/logo.png" alt=""></a>
                 </div>
     
                 <!-- Collect the nav links, forms, and other content for toggling -->
@@ -33,6 +33,7 @@
                         <li><a data-scroll data-options='{ "easing": "easeInOutQuad" }' href="#gallerySection">Projects</a></li>
                         <li><a data-scroll data-options='{ "easing": "easeInOutQuad" }' href="#bioInfo">About</a></li>
                         <li><a data-scroll data-options='{ "easing": "easeInOutQuad" }' href="#contactme">Contact</a></li>
+                        <li><a href="/blog/post/all">Blog</a></li>
                     </ul>
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->

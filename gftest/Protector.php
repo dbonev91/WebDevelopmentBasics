@@ -26,6 +26,8 @@ class Protector {
         if (!$isValidToken) {
             throw new \Exception("Invalid session token! Please logout and login again!");
         }
+        
+        return true;
     }
     
     public static function createSessionToken ($username, $salt) {

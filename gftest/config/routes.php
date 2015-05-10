@@ -56,6 +56,43 @@ $cnf['blog']['namespace'] = 'Controllers\Blog';
 $cnf['blog']['controllers']['post']['to'] = 'post';
 $cnf['blog']['controllers']['post']['methods']['add'] = 'addPost';
 
+// View posts
+$cnf['blog']['namespace'] = 'Controllers\Blog';
+$cnf['blog']['controllers']['post']['to'] = 'post';
+$cnf['blog']['controllers']['post']['methods']['all'] = 'viewPosts';
+
+// View posts
+$cnf['blog']['namespace'] = 'Controllers\Blog';
+$cnf['blog']['controllers']['post']['to'] = 'post';
+$cnf['blog']['controllers']['post']['methods']['view'] = 'viewPost';
+
+// Search post
+$cnf['blog']['namespace'] = 'Controllers\Blog';
+$cnf['blog']['controllers']['post']['to'] = 'post';
+$cnf['blog']['controllers']['post']['methods']['search'] = 'search';
+
+// Delete post
+$cnf['blog']['namespace'] = 'Controllers\Blog';
+$cnf['blog']['controllers']['post']['to'] = 'post';
+$cnf['blog']['controllers']['post']['methods']['delete'] = 'delete';
+
+// Comments
+
+// Comment form
+$cnf['blog']['namespace'] = 'Controllers\Blog';
+$cnf['blog']['controllers']['comment']['to'] = 'comment';
+$cnf['blog']['controllers']['comment']['methods']['show'] = 'addCommentForm';
+
+// Add comment
+$cnf['blog']['namespace'] = 'Controllers\Blog';
+$cnf['blog']['controllers']['comment']['to'] = 'comment';
+$cnf['blog']['controllers']['comment']['methods']['add'] = 'addComment';
+
+// Delete comment
+$cnf['blog']['namespace'] = 'Controllers\Blog';
+$cnf['blog']['controllers']['comment']['to'] = 'comment';
+$cnf['blog']['controllers']['comment']['methods']['delete'] = 'delete';
+
 $cnf['*']['namespace'] = 'Controllers';
 
 return $cnf;

@@ -7,9 +7,11 @@ class Login extends \GF\DefaultController {
 	public function showLoginForm () {
 		$this->view->prefix = '/gftest/public';
         $this->view->csrf = \Protector::getInstance();
+        $this->view->db = new \GF\DB\SimpleDB();
 		
 		$this->view->appendToLayout('header', 'layouts.fundamentals.header');
         $this->view->appendToLayout('userbar', 'layouts.blog.user.userbar');
+        $this->view->appendToLayout('issuebar', 'layouts.blog.user.issuebar');
         $this->view->appendToLayout('content', 'layouts.blog.user.login-form');
         $this->view->appendToLayout('contacts', 'layouts.defaults.contact-me');
         $this->view->appendToLayout('footer', 'layouts.fundamentals.footer');
@@ -49,8 +51,9 @@ class Login extends \GF\DefaultController {
                 }
                 
                 $_SESSION['sessionToken'] = $scrf->createSessionToken($username, $userData['id']);
-                
+                $_SESSION['success'] = 'Login successfull! Hallo, ' .$username;
                 // TODO: redirect to blog
+                header('Location: http://dbonev.com/blog/post/all');
             }
             else {
                 throw new \Exception("Invalid username or password");
@@ -65,5 +68,6 @@ class Login extends \GF\DefaultController {
         unset ($_SESSION['admin'], $_SESSION['user'], $_SESSION['sessionToken']);
         session_destroy();
         echo 'Logout successfully!';
+        header('Location: http://dbonev.com/blog/post/all');
     }
 }

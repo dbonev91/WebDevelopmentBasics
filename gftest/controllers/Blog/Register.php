@@ -8,9 +8,11 @@ class Register extends \GF\DefaultController {
 	public function showRegisterForm () {
         $this->view->prefix = '/gftest/public';
         $this->view->csrf = \Protector::getInstance();
+        $this->view->db = new \GF\DB\SimpleDB();
 		
 		$this->view->appendToLayout('header', 'layouts.fundamentals.header');
         $this->view->appendToLayout('userbar', 'layouts.blog.user.userbar');
+        $this->view->appendToLayout('issuebar', 'layouts.blog.user.issuebar');
         $this->view->appendToLayout('content', 'layouts.blog.user.register-form');
         $this->view->appendToLayout('contacts', 'layouts.defaults.contact-me');
         $this->view->appendToLayout('footer', 'layouts.fundamentals.footer');
@@ -42,13 +44,14 @@ class Register extends \GF\DefaultController {
             $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
             $register = $db->prepare('INSERT INTO blog_users (username, pass, email) VALUES (?, ?, ?)')->execute(array($username, $hashedPassword, $email));
             if ($register) {
-                $_SESSION['user'] = $register->getLastInsertId();
+                $_SESSION['user'] = $username;
                 $_SESSION['sessionToken'] = $scrf->createSessionToken ($username, $register->getLastInsertId());
-                echo 'Register successfully!';
+                $_SESSION['success'] = 'Register successfully!';
                 
                 // TODO: redirect to blog
             }
             else {
+                $_SESSION['error'] = "Register error: please try again later.";
                 throw new \Exception("Register error: please try again later.");
             }
         }
@@ -57,6 +60,7 @@ class Register extends \GF\DefaultController {
     public function checkExists ($val, $db, $property) {
         $isExists = $db->prepare("SELECT {$property} FROM blog_users WHERE {$property}=?")->execute(array($val));
         if ($isExists->getAffectedRows()) {
+        $_SESSION['error'] = "$property allready taken";
             throw new \Exception("$property allready taken");
         }
     }
@@ -67,6 +71,7 @@ class Register extends \GF\DefaultController {
             return true;
         }
         
+        $_SESSION['error'] = "username shoud be bethween 3 and 45 symbols length!";
         throw new \Exception("username shoud be bethween 3 and 45 symbols length!");
     }
     
@@ -76,6 +81,7 @@ class Register extends \GF\DefaultController {
             return true;
         }
         
+        $_SESSION['error'] = "passwords do not match";
         throw new \Exception("passwords do not match");
     }
     
@@ -85,6 +91,7 @@ class Register extends \GF\DefaultController {
             return true;
         }
         
+        $_SESSION['error'] = "passowrd should be 6 symbols at least";
         throw new \Exception("passowrd should be 6 symbols at least");
     }
     
@@ -94,6 +101,7 @@ class Register extends \GF\DefaultController {
             return true;
         }
         
+        $_SESSION['error'] = "Incorrect email!";
         throw new \Exception("incorrect email");
     }
 }
