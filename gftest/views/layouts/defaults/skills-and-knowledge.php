@@ -10,14 +10,24 @@
             <div class="col-md-12">
                 <!-- <img src="" alt="Skills Graph"> -->
                     <h2>Personal skill graph:</h2>
+                    <ul class='chart'>
                     <?php
                         include_once('gftest/models/KnowledgeModel.php');
                         
                         $knowledgeArray = $this->db->prepare('SELECT title, percent FROM knowledge')->execute()->fetchAllAssoc();
+                        
                         foreach ($knowledgeArray as $know) {
                             $knowledgeElement = new \Models\KnowledgeModel($know['title'], $know['percent']);
                             
                             echo $knowledgeElement->drawElement();
+                        }
+                    ?>
+                    </ul>
+                    <?php
+                        foreach ($knowledgeArray as $know) {
+                            $knowledgeElement = new \Models\KnowledgeModel($know['title'], $know['percent']);
+                            
+                            echo $knowledgeElement->drawForMobile();
                         }
                     ?>
             </div> 

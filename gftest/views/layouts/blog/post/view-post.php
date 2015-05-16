@@ -23,35 +23,23 @@ $postComments = $this->db->prepare(
 	"SELECT commentcontent AS comment, name, email, dateadded, id
 	FROM blog_comments 
 	WHERE post_id=?")->execute(array($postId))->fetchAllAssoc();
-	
-$output = "<h2>" . htmlentities($postData[0]['title']) . "</h2>";
-if (isset($_SESSION['admin'])) {
-	$output .= "<a href='/blog/post/delete/" . $postId . "'>[X]</a>";
-}
-$output .= "<div class='postBody singlePost'>";
-$output .= "<div class='postHeaders'>";
-$output .= "<span class='dateAdded'>" . date('d.m.Y', $postData[0]['dateadded']) . "</span>";
-$output .= " - ";
-$output .= "<span class='addedFrom'><a href='/blog/profile/view/" . $postData[0]['username'] . "'>" . $postData[0]['username'] . "</a></span>";
-$output .= "</div>";
-$output .= "<div class='postContent'>" . htmlentities($postData[0]['postcontent']) . "</div>";
-$output .= "<a href='/blog/comment/show/" . $postId . "'>Comment this</a>";
-$output .= "<div class='commentsHolder'>";
-$output .= "<h3>Comments:</h3>";
-foreach ($postComments as $comment) {
-	$output .= "<div class='comment'>";
-	$output .= "<span>On " . date('d.m.Y - H:i', $comment['dateadded']) . "</span>";
-	$output .= " - from: ";
-	$output .= "<span>" . htmlentities($comment['name']) . "</span>";
-	$output .= " - email: ";
-	$output .= "<span>" . htmlentities($comment['email']) . "</span>";
-	$output .= "<div class='commentContent'>" . htmlentities($comment['comment']) . "</div>";
-	if (isset($_SESSION['admin'])) {
-		$output .= "<a href='/blog/comment/delete/" . $comment['id'] . "'>[X]</a>";
-	}
-	$output .= "</div>";
-}
-$output .= "</div>";
-$output .= "<div>";
 
+include_once 'gftest/models/PostInModel.php';
+
+$postInModel = new \Models\PostInModel($postId, $postData[0]['title'], $postData[0]['dateadded'],
+	$postData[0]['postcontent'], $postData[0]['username']);
+	
+echo $postInModel->drawElement();
+
+$output = "<h3>Comments:</h3>";
+ 
 echo $output;
+
+include_once 'gftest/models/CommentModel.php';
+
+foreach ($postComments as $comment) {
+	$commentModel = new \Models\CommentModel($comment['id'], $comment['email'], $comment['dateadded'],
+		$comment['comment'], $comment['name']);
+		
+	echo $commentModel->drawElement();
+}

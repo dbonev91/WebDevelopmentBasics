@@ -6,9 +6,9 @@
                 include_once('gftest/models/ProjectModel.php');
                 
                 $projectsArray =
-                    $this->db->prepare('SELECT title, content, demo, github, projecttype, projectimage FROM projects')->execute()->fetchAllAssoc();
+                    $this->db->prepare('SELECT id, title, content, demo, github, projecttype, projectimage FROM projects')->execute()->fetchAllAssoc();
                 foreach ($projectsArray as $project) {
-                    $projectModel = new \Models\ProjectModel($project['title'], $project['content'],
+                    $projectModel = new \Models\ProjectModel($project['id'], $project['title'], $project['content'],
                         $project['projectimage'], $project['projecttype'], $project['github'], $project['demo']);
                         
                     echo $projectModel->drawElement();
@@ -35,7 +35,9 @@
 							MODAL FOR JS:
 							
 							<div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
                                 <h4 class="modal-title" id="myModalLabel">Уебсайт проект за биологичен факултет на ПУ</h4>
                             </div>
                             <div class="modal-body">
@@ -46,6 +48,20 @@
                                 <a href="http://bio-uni-plovdiv.com/?headinfo=1">click to see the project</a>
                             </div>
 						-->
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                <h4 class="modal-title" id="myModalLabel"></h4>
+                            </div>
+                            <div class="modal-body">
+                                <img />
+                                <p></p>
+                            </div>
+                            <div class="modal-footer">
+                                <a>click to see the project</a>
+                            </div>
+                            <input type="hidden" class="clickedProjectData" />
 					</div>
 				</div>
 			</div>

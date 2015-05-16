@@ -125,6 +125,31 @@ $(document).ready(function () {
 			event.preventDefault();
 			
 			location.href = 'http://dbonev.com/blog/post/search/' + $('.searchForm #search').val();
+		}).on('click', '.seemore', function () {
+			var projectId = $(this).attr('class').split(' ')[1];
+			
+			$.ajax({
+				url: 'http://dbonev.com/portfolio/modal/getProject/',
+				data: {
+					projectId: projectId
+				},
+				type: 'post',
+				success: function (result) {
+					var JSONResult = JSON.parse(result)[0];
+					console.log(JSONResult);
+					$('.modal .modal-title').text(JSONResult.title);
+					$('.modal .modal-body img')
+						.attr('src', '/gftest/public/img/projects/images/' + JSONResult.projectimage + '.jpg');
+					$('.modal p').text(JSONResult.content);
+					$('.modal .modal-footer a').attr('href', JSONResult.demo);
+						
+					$('.clickedProjectData').val(result);
+				},
+				error: function (error) {
+					console.log(error);
+					console.log(error.responseText);
+				}
+			})
 		});
 	})();
 });

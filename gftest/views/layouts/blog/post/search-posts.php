@@ -15,27 +15,21 @@ foreach ($tags as $tag) {
 }
 
 // extract results
-$output = "<section class='searchedPosts'>";
-$output .= "<h2>Results for: " . htmlentities($this->input->get(0)) . "</h2>";
+$output = "<h2>Results for: " . htmlentities($this->input->get(0)) . "</h2>";
+
+echo $output;
+
+include_once 'gftest/models/PostOut.php';
 
 foreach ($search as $results) {
 	foreach ($results as $result) {
 		$posts = $this->db->prepare("SELECT title, dateadded, visitscount, id FROM blog_posts WHERE id=?")->
 			execute(array($result['post_id']))->fetchAllAssoc();
 			
-		foreach ($posts as $post) {	
-			$output .= "<div class='postBody searchPosts'>";
-			$output .= "<div class='title'><a href='/blog/post/view/" . $post['id'] . "'>" . htmlentities($post['title']) . "</a></div>";
-			$output .= "<div class='dateadded'>Добавен на: " . date('d.m.Y', htmlentities($post['dateadded'])) . "</div>";
-			$output .= "<div class='visits'>{$post['visitscount']} преглеждания</div>";
-			if (isset($_SESSION['admin'])) {
-				$output .= "<a href='/blog/post/delete/" . $post['id'] . "'>[X]</a>";	
-			}
-			$output .= "</div>";
+		foreach ($posts as $post) {
+			$postOut = new \Models\PostOut($post['id'], $post['title'], $post['dateadded'], $post['visitscount']);
+			
+			echo $postOut->drawElement();
 		}
 	}
 }
-
-$output .= "</section>";
-
-echo $output;

@@ -3,19 +3,29 @@ namespace Models;
 include_once('BaseModel.php');
 
 class ProjectModel extends \Models\BaseModel {
+	private $id;
 	private $content;
 	private $image;
 	private $type;
 	private $github = null;
 	private $demo = null;
 	
-	public function __construct ($title, $content, $image, $type, $github = null, $demo = null) {
+	public function __construct ($id, $title, $content, $image, $type, $github = null, $demo = null) {
 		parent::__construct($title);
 		$this->setContent($content);
 		$this->setImage($image);
 		$this->setGithub($github);
 		$this->setDemo($demo);
 		$this->setType($type);
+		$this->setId($id);
+	}
+	
+	public function setId ($value) {
+		$this->id = $value;
+	}
+	
+	public function getId () {
+		return $this->id;
 	}
 	
 	public function setContent ($value) {
@@ -64,12 +74,13 @@ class ProjectModel extends \Models\BaseModel {
 	
 	public function drawElement () {
         $outputProject = '<div class="project-item">';
-        $outputProject .= '<img class="imageshow" src="' . $this->dirPrefix . 'img/projects/thumbs/' . $this->getImage() . '.jpg" alt="" />';
+        $outputProject .= '<img class="imageshow" src="' . $this->dirPrefix . 'img/projects/thumbs/' .
+			$this->getImage() . '.jpg" alt="" />';
         $outputProject .= '<div class="projectInfo">';
         $outputProject .= '<span class="typeofWork">' . $this->createType($this->getType()) . '</span>';
         $outputProject .= '<h4 class="projectName">' . $this->getTitle() . '</h4>';
         $outputProject .= '</div>';
-        $outputProject .= '<a class="seemore" href="#" data-toggle="modal" data-target="#myModal1"><img src="' . $this->dirPrefix . 'img/seemore.png" alt=""></a>';
+        $outputProject .= $this->showModal($this->getId());
         $outputProject .= $this->demoLink($this->getDemo());
 		$outputProject .= $this->githubLink($this->getGithub());
         $outputProject .= '</div>';
@@ -108,5 +119,12 @@ class ProjectModel extends \Models\BaseModel {
 		}
 		
 		return $githubLink;
+	}
+	
+	public function showModal ($projectId) {
+		$modalButton = '<a class="seemore ' . $projectId . '" href="#" data-toggle="modal" data-target="#myModal1">';
+		$modalButton .= '<img src="' . $this->dirPrefix . 'img/seemore.png" alt=""></a>';
+			
+		return $modalButton;
 	}
 }

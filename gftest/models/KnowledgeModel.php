@@ -19,6 +19,21 @@ class KnowledgeModel extends BaseModel {
 	}
 	
 	public function drawElement () {
+		$knowledgeLine = '<li class="bar ' . strtolower($this->getTitle()) . '" style="height: ' . $this->getPercent() . '%" title="' . $this->getPercent() . '">';
+		
+		$knowledgeLine .= '<div class="percent">';
+		$knowledgeLine .= $this->getPercent();
+		$knowledgeLine .= '<span>%</span>';
+		$knowledgeLine .= '</div>';
+		
+		$knowledgeLine .= '<div class="skill">' . $this->getTitle() . '</div>';
+		
+		$knowledgeLine .= '</li>';
+		
+		return $knowledgeLine;
+	}
+	
+	public function drawForMobile () {
 		$knowledgeLine = '<div class="knowlegdeLine" style="width: ' . $this->getPercent() . '%">' . $this->getTitle() . ': ' . $this->getPercent() . '%</div>';
 		
 		return $knowledgeLine;

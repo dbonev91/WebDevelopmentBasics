@@ -93,6 +93,13 @@ $cnf['blog']['namespace'] = 'Controllers\Blog';
 $cnf['blog']['controllers']['comment']['to'] = 'comment';
 $cnf['blog']['controllers']['comment']['methods']['delete'] = 'delete';
 
+// Portfolio
+
+// GET projectJSON
+$cnf['portfolio']['namespace'] = 'Controllers\Portfolio';
+$cnf['portfolio']['controllers']['modal']['to'] = 'modal';
+$cnf['portfolio']['controllers']['modal']['methods']['getProject'] = 'getProjectJSON';
+
 $cnf['*']['namespace'] = 'Controllers';
 
 return $cnf;
